@@ -71,7 +71,7 @@ VAR
   long colors[6], colors2[12]
   byte brightness         
   long RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, BLACK, WHITE
-  long HUSKIEORANGE, HUSKIEBLUE
+  long HUSKIEORANGE, HUSKIEBLUE, DOGEPURPLE
   byte channels[NUMCHANNELS]
   byte ch
   
@@ -158,14 +158,31 @@ PUB SerialConnection  | cmd, channel, x
 PUB Neopixels
   'neo.fill(0,64,neo.color(255,255,255))
   
-  repeat          
+  repeat
+     cooleoleo         
      gradient
      bounce  
      stripes
-     rainbow
-     'random  
+     rainbow  
      center
-     stripes
+     stripes 
+     
+
+PRI cooleoleo | count   , i
+  neo.fill(0,64,DOGEPURPLE)
+  repeat count from 0 to 5
+    repeat  i from 0 to 60
+      neo.fill(0,64,DOGEPURPLE)
+      neo.fill(i,i+4,BLUE)
+      if buttonPressed
+        return
+      waitcnt(cnt+clkfreq/80)
+    repeat i from 60 to 0
+      neo.fill(0,64,BLUE)
+      neo.fill(i,i+4,DOGEPURPLE)
+      if buttonPressed
+        return
+      waitcnt(cnt+clkfreq/80)
 
 PRI potentiometer
   return 5000
@@ -290,14 +307,7 @@ PRI rainbow | x, i , count
         channels[i] := 0
     waitcnt(cnt+clkfreq/(potentiometer/160))
     if buttonPressed
-      return
-PRI random | x, count 
-  repeat count from 0 to 10
-    repeat x from 0 to 64
-      neo.set(x,neo.colorx(rand.random*255,rand.random*255,rand.random*255,BRIGHTNESS))
-    waitcnt(cnt+clkfreq/(potentiometer/50))
-    if buttonPressed
-      return
+      return   
 PRI testCh(channel)
   return (ch =< 64 and ch => 0)
 PRI setColors | x , r, g, b, in
@@ -310,7 +320,8 @@ PRI setColors | x , r, g, b, in
   BLACK := neo.colorx(0,0,0,BRIGHTNESS)
   WHITE := neo.colorx(255,255,255,BRIGHTNESS)
   HUSKIEORANGE := neo.colorx(230,92,0,BRIGHTNESS)
-  HUSKIEBLUE := neo.colorx(6,0,120,BRIGHTNESS)
+  HUSKIEBLUE := neo.colorx(6,0,120,BRIGHTNESS) 
+  DOGEPURPLE := neo.colorx(26,255,0,BRIGHTNESS)
   colors[0] := RED
   colors[1] := ORANGE
   colors[2] := YELLOW

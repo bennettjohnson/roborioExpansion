@@ -1,7 +1,4 @@
-{Runs our new demo box at the Arkansas regionsal
-Gota maek sur to spel all wirds rong yep yep yep!}
-
-
+{Runs our new demo box at outreach events}   
 CON
         _clkmode = xtal1 + pll16x                                               'Standard clock mode * crystal frequency = 80 MHz
         _xinfreq = 5_000_000
@@ -129,7 +126,7 @@ PUB LCD_Main
   lcd.home
   lcd.str(string("-----TEAM  3061-----"))'set top line
   lcd.str(string(lcd#LCD_LINE1,"  HUSKIE ROBOTICS!"))
-  lcd.str(string(lcd#LCD_LINE2,"Batttery V: "))
+  lcd.str(string(lcd#LCD_LINE2,"Battery V: "))
   'lcd.str(string(lcd#LCD_LINE3,"LED Current: "))
   waitcnt(cnt+clkfreq/1000)
   lcd.putc(217)
@@ -177,24 +174,23 @@ PUB SerialConnection  | cmd, channel, x
     
                        
 
-PUB Neopixels
-  'neo.fill(0,64,neo.color(255,255,255))
-  doge
-  repeat
-     cooleoleo      
+PUB Neopixels                             
+  'doge
+  'repeat
+  '   cooleoleo      
      gradient
-     bounce  
-     stripes
-     rainbow
-     random  
-     center
-     police
-     dumb
-
+  '   bounce  
+  '   stripes
+  '   rainbow
+  '   random  
+  '   center
+  '   police
+  '   dumb
+   
 PRI potentiometer
-  return adc.in(JOYSTICK_CHANNEL)
-PRI slider
-  return adc.in(SLIDER_CHANNEL)
+  return 5000'adc.in(JOYSTICK_CHANNEL)
+PRI slider 'brightness, should return 0-255
+  return 255'adc.in(SLIDER_CHANNEL)
 PRI buttonPressed
   if buttonPressed_
     buttonPressed_ := false
@@ -204,30 +200,30 @@ PRI buttonPressed
 PRI shade  | c_,count
   c_ := 0
   repeat count from 0 to 20
-    neo.fill(0,64,neo.scale_rgb(colors2[c_],slider))
+    neo.fill(0,64,colors2[c_])
     c_++
     if c_ > 11
       c_ := 0
-    waitcnt(cnt+clkfreq/(potentiometer/250))
+    waitcnt(cnt+clkfreq/2)
     if buttonPressed
       return
 PRI police | count,i
   i := true
   repeat count from 0 to 20
     if i
-      neo.fill(0,32,neo.scale_rgb(RED,slider))
-      neo.fill(33,64,neo.scale_rgb(BLUE,slider))
+      neo.fill(0,32,RED)
+      neo.fill(33,64,BLUE)
     else
-      neo.fill(0,32,neo.scale_rgb(BLUE,slider))
-      neo.fill(33,64,neo.scale_rgb(RED,slider))
+      neo.fill(0,32,BLUE)
+      neo.fill(33,64,RED)
     i := !i
-    waitcnt(cnt+clkfreq/(potentiometer/(500/5)))
+    waitcnt(cnt+clkfreq/5)
       if buttonPressed
         return
 PRI doge | count
   repeat count from 1 to 5
     neo.fill(0,64,DOGEPURPLE)
-    waitcnt(cnt+clkfreq/(potentiometer/250))
+    waitcnt(cnt+clkfreq/2)
 PRI dumb | count  ,i ,b1 ,c_ ,b2 
   b1 := false
   b2 := false
@@ -235,54 +231,48 @@ PRI dumb | count  ,i ,b1 ,c_ ,b2
   repeat count from 0 to 10
     repeat i from 0 to 64
       if b1
-        neo.fill(i,i+4,neo.scale_rgb(HUSKIEBLUE,slider))
+        neo.fill(i,i+4,HUSKIEBLUE)
       else
-        neo.fill(i,i+4,neo.scale_rgb(HUSKIEORANGE,slider))
+        neo.fill(i,i+4,HUSKIEORANGE)
       b1 := !b1
       i+=4
       if buttonPressed
         return
-    waitcnt(cnt+clkfreq/(potentiometer/250))
+    waitcnt(cnt+clkfreq/2)
     b2 := !b2
 PRI gradient | r,g_,b_,freq , count
-  freq := (potentiometer/50)*10
+  freq := potentiometer/50
   repeat count from 0 to 1                                              '                  count from 0 to 1
     r := 255
     g_ := 0
     b_ := 0
     repeat g_ from 0 to 255
-      neo.fill(0,64,neo.colorx(r,g_,b_,slider))
-      freq := (potentiometer/50)*10 
+      neo.fill(0,64,neo.colorx(r,g_,b_,slider))   
       waitcnt(cnt+clkfreq/freq)
       if buttonPressed
         return
     repeat r from 255 to 0
-      neo.fill(0,64,neo.colorx(r,g_,b_,slider))
-      freq := (potentiometer/50)*10 
+      neo.fill(0,64,neo.colorx(r,g_,b_,slider))   
       waitcnt(cnt+clkfreq/freq)
       if buttonPressed
         return
     repeat b_ from 0 to 255
-      neo.fill(0,64,neo.colorx(r,g_,b_,slider))
-      freq := (potentiometer/50)*10 
+      neo.fill(0,64,neo.colorx(r,g_,b_,slider))  
       waitcnt(cnt+clkfreq/freq)
       if buttonPressed
         return
     repeat g_ from 255 to 0
-      neo.fill(0,64,neo.colorx(r,g_,b_,slider))
-      freq := (potentiometer/50)*10 
+      neo.fill(0,64,neo.colorx(r,g_,b_,slider))    
       waitcnt(cnt+clkfreq/freq)
       if buttonPressed
        return
     repeat r from 0 to 255
-      neo.fill(0,64,neo.colorx(r,g_,b_,slider))
-      freq := (potentiometer/50)*10 
+      neo.fill(0,64,neo.colorx(r,g_,b_,slider))   
       waitcnt(cnt+clkfreq/freq)
       if buttonPressed
         return
     repeat b_ from 255 to 0
-      neo.fill(0,64,neo.colorx(r,g_,b_,slider))
-      freq := (potentiometer/50)*10 
+      neo.fill(0,64,neo.colorx(r,g_,b_,slider))  
       waitcnt(cnt+clkfreq/freq)
       if buttonPressed
         return
@@ -291,9 +281,9 @@ PRI stripes | offset, x, i, count
   repeat count from 0 to 100
     repeat x from 0+offset to 64+offset
       repeat i from 0 to 3
-        neo.set(limit(x+i),neo.scale_rgb(HUSKIEORANGE,slider))
+        neo.set(limit(x+i),HUSKIEORANGE)
       repeat i from 4 to 7
-        neo.set(limit(x+i),neo.scale_rgb(HUSKIEBLUE,slider))
+        neo.set(limit(x+i),HUSKIEBLUE)
       'neo.fill(limit(x),limit(x+3),ORANGE)
       if buttonPressed
         return
@@ -307,17 +297,17 @@ PRI cooleoleo | count   , i
   neo.fill(0,64,DOGEPURPLE)
   repeat count from 0 to 5
     repeat  i from 0 to 60
-      neo.fill(0,64,neo.scale_rgb(DOGEPURPLE,slider))
-      neo.fill(i,i+4,neo.scale_rgb(BLUE,slider))
+      neo.fill(0,64,DOGEPURPLE)
+      neo.fill(i,i+4,BLUE)     
       if buttonPressed
         return
-      waitcnt(cnt+clkfreq/50)
+      waitcnt(cnt+clkfreq/80)
     repeat i from 60 to 0
-      neo.fill(0,64,neo.scale_rgb(BLUE,slider))
-      neo.fill(i,i+4,neo.scale_rgb(DOGEPURPLE,slider))
+      neo.fill(0,64,BLUE)
+      neo.fill(i,i+4,DOGEPURPLE)
       if buttonPressed
         return
-      waitcnt(cnt+clkfreq/(potentiometer/10))
+      waitcnt(cnt+clkfreq/80)
     
 PRI limit(i) : val
   if i < 0
@@ -335,7 +325,7 @@ PRI center | c_, x
       neo.set(Neo_Length-x, colors[c_])
       if buttonPressed
         return
-      waitcnt(cnt+clkfreq/(potentiometer/50))
+      waitcnt(cnt+clkfreq/50)
     c_++
     if c_ == 6
       c_ := 0

@@ -91,7 +91,7 @@ Run all code
 }
         longfill(@datfilename, 0, 32)   'fill data file name with zeros until the thirty second byte
         init                            'Initialize all drives
-
+        dipSwitchLEDS                   'Initialize Dip to LED function
 
 pri init
 {
@@ -115,13 +115,34 @@ LEDDip function
 Start LEDS based on Dipswitch position
 }
     
-    DIRA[led_red]   := output       'Set 
-    DIRA[led_green] := output       'Set
-    DIRA[led_yellow]:= output       'Set
+    DIRA[led_red]   := output           'Set transmit pin led_red to output
+    DIRA[led_yellow]:= output           'Set transmit pin led_yellow to output
+    DIRA[led_green] := output           'Set transmit pin led_green to output
     
-    repeat                          'Repeat Stuff - Bo Burnham
-        mode := INA[dip1 .. dip4]   '
-        if(mode == mode_doNothing)  '
-            OUTA[led_red]   := off  '
-            OUTA[led_green] := off  '
-            OUTA[led_yellow]:= off  '
+    repeat                              'Repeat Stuff - Bo Burnham
+        mode := INA[dip1 .. dip4]       'Set mode to IN for Dips 1 through 3
+        if(mode == mode_doNothing)      'Check if mode is equal to mode_doNothing
+            OUTA[led_red]   := off      'Turn off led_red pin
+            OUTA[led_yellow]:= off      'Turn off led_yellow pin
+            OUTA[led_green] := off      'Turn off led_green pin
+        elseif (mode == mode_forward)   'Check if mode is equal to mode_forward                              
+            OUTA[led_red]    := off     'Turn off led_red pin
+            OUTA[led_yellow] := on      'Turn on led_yellow pin
+            OUTA[led_green]  := off     'Turn off led_green pin
+        elseif (mode == mode_turnLeft)  'Check if mode is equal to mode_turnLeft
+            OUTA[led_red]    := on      'Turn on led_red pin
+            OUTA[led_yellow] := off     'Turn off led_yellow pin
+            OUTA[led_green]  := off     'Turn off led_green pin
+        elseif (mode == mode_turnRight) 'Check if mode is equal to mode_turnRight
+            OUTA[led_red]    := off     'Turn off led_red pin
+            OUTA[led_yellow] := off     'Turn off led_yellow pin
+            OUTA[led_green]  := on      'Turn on led_green pin
+        elseif (mode == mode_threeTote) 'Check if robot has a three tote stack
+            OUTA[led_red]    := on      'Turn on led_red pin
+            OUTA[led_yellow] := on      'Turn on led_yellow pin
+            OUTA[led_green]  := on      'Turn on led_green pin
+        {Shouldnt be needed}
+        else                            'Check if nothing else
+            OUTA[LED_RED]    := off     'Turn off led_red pin
+            OUTA[LED_YELLOW] := off     'Turn off led_yellow pin
+            OUTA[LED_GREEN]  := off     'Turn off led_green pin
